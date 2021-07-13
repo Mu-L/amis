@@ -12,7 +12,7 @@ import {
 } from '../Schema';
 import {withStore} from '../components/WithStore';
 import {flow, Instance, types} from 'mobx-state-tree';
-import {getVariable, guid, isObject} from '../utils/helper';
+import {getPropValue, getVariable, guid, isObject} from '../utils/helper';
 import {StoreNode} from '../store/node';
 import isPlainObject from 'lodash/isPlainObject';
 import {isPureVariable, resolveVariableAndFilter} from '../utils/tpl-builtin';
@@ -187,27 +187,27 @@ export const MappingField = withStore(props =>
       } = this.props;
       const map = store.map;
 
-      let key =
-        this.props.value ?? (name ? getVariable(data, name) : undefined);
+      let key = getPropValue(this.props);
 
       let viewValue: React.ReactNode = (
         <span className="text-muted">{placeholder}</span>
       );
 
-      key =
-        typeof key === 'string'
-          ? key.trim()
-          : key === true
-          ? '1'
-          : key === false
-          ? '0'
-          : key; // trim 一下，干掉一些空白字符。
+      key = typeof key === 'string' ? key.trim() : key; // trim 一下，干掉一些空白字符。
+      let value: any = undefined;
 
-      if (typeof key !== 'undefined' && map && (map[key] ?? map['*'])) {
-        viewValue = render(
-          'tpl',
-          map[key] ?? map['*'] // 兼容平台旧用法：即 value 为 true 时映射 1 ，为 false 时映射 0
-        );
+      if (
+        typeof key !== 'undefined' &&
+        map &&
+        (value =
+          map[key] ??
+          (key === true && map['1']
+            ? map['1']
+            : key === false && map['0']
+            ? map['0']
+            : map['*'])) !== undefined
+      ) {
+        viewValue = render('tpl', value);
       }
 
       return <span className={cx('MappingField', className)}>{viewValue}</span>;

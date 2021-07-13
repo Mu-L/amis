@@ -8,6 +8,7 @@ import {
 } from '../components/WithRemoteConfig';
 import {resolveVariable} from '../utils/tpl-builtin';
 import {filter} from '../utils/tpl';
+import {getPropValue} from '../utils/helper';
 
 enum StepStatus {
   wait = 'wait',
@@ -87,7 +88,6 @@ export function Steps(props: StepsProps) {
     className,
     classnames: cx,
     steps,
-    value = 0,
     status,
     data,
     source,
@@ -98,6 +98,8 @@ export function Steps(props: StepsProps) {
     config ||
     steps ||
     [];
+
+  const value = getPropValue(props) ?? 0;
   const resolveValue =
     typeof value === 'string' && isNaN(+value)
       ? (resolveVariable(value, data) as string) || +value
@@ -189,15 +191,14 @@ const StepsWithRemoteConfig = withRemoteConfig({
     RemoteOptionsProps & React.ComponentProps<typeof Steps>
   > {
     render() {
-      const {config, ...rest} = this.props;
+      const {config, deferLoad, loading, updateConfig, ...rest} = this.props;
       return <Steps config={config} {...rest} />;
     }
   }
 );
 
 @Renderer({
-  test: /(^|\/)steps$/,
-  name: 'steps'
+  type: 'steps'
 })
 export class StepsRenderer extends React.Component<StepsProps> {
   render() {

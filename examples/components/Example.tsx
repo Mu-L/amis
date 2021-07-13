@@ -39,6 +39,7 @@ import LoadMoreSchema from './CRUD/LoadMore';
 import TestCrudSchema from './CRUD/test';
 import FixedCrudSchema from './CRUD/Fix';
 import AsideCrudSchema from './CRUD/Aside';
+import Aside2CrudSchema from './CRUD/Aside2';
 import FieldsCrudSchema from './CRUD/Fields';
 import JumpNextCrudSchema from './CRUD/JumpNext';
 import PopOverCrudSchema from './CRUD/PopOver';
@@ -82,7 +83,7 @@ import Tab1Schema from './Tabs/Tab1';
 import Tab2Schema from './Tabs/Tab2';
 import Tab3Schema from './Tabs/Tab3';
 import TestComponent from './Test';
-import JSSDK from './JSSDK/index';
+import APP from './APP/index';
 import {normalizeLink} from '../../src/utils/normalizeLink';
 
 export const examples = [
@@ -335,9 +336,14 @@ export const examples = [
             component: makeSchemaRenderer(HeaderHideSchema)
           },
           {
-            label: '带边栏',
+            label: '带边栏（用 tree）',
             path: '/examples/crud/aside',
             component: makeSchemaRenderer(AsideCrudSchema)
+          },
+          {
+            label: '带边栏（用 Nav）',
+            path: '/examples/crud/aside2',
+            component: makeSchemaRenderer(Aside2CrudSchema)
           },
           {
             label: '固定表头/列',
@@ -563,11 +569,11 @@ export const examples = [
       },
 
       {
-        label: 'JSSDK',
+        label: 'APP 多页应用',
         icon: 'fa fa-cubes',
-        path: '/examples/jssdk',
-        component: makeSchemaRenderer(JSSDK, false, {
-          session: 'jssdk',
+        path: '/examples/app',
+        component: makeSchemaRenderer(APP, false, {
+          session: 'app',
           jumpTo: (to: string) => {
             location.hash = to;
           },
@@ -605,7 +611,7 @@ export const examples = [
               })(pathname);
             }
 
-            return pathname === link;
+            return pathname === encodeURI(link);
           }
         })
       }

@@ -102,7 +102,7 @@ List 的内容、Card 卡片的内容配置同上
     "data": {
         "type": "2"
     },
-    "controls": [
+    "body": [
         {
             "type": "static-mapping",
             "name": "type",
@@ -113,6 +113,50 @@ List 的内容、Card 卡片的内容配置同上
                 "3": "<span class='label label-danger'>惊吓</span>",
                 "4": "<span class='label label-warning'>紧张</span>",
                 "*": "其他：${type}"
+            }
+        }
+    ]
+}
+```
+
+### 布尔值映射
+
+```schema: scope="body"
+{
+    "type": "form",
+    "data": {
+        "type": true
+    },
+    "body": [
+        {
+            "type": "static-mapping",
+            "name": "type",
+            "label": "映射",
+            "map": {
+                "1": "<span class='label label-info'>开</span>",
+                "0": "<span class='label label-default'>关</span>"
+            }
+        }
+    ]
+}
+```
+
+或者
+
+```schema: scope="body"
+{
+    "type": "form",
+    "data": {
+        "type": true
+    },
+    "body": [
+        {
+            "type": "static-mapping",
+            "name": "type",
+            "label": "映射",
+            "map": {
+                "true": "<span class='label label-info'>开</span>",
+                "false": "<span class='label label-default'>关</span>"
             }
         }
     ]
@@ -131,7 +175,7 @@ List 的内容、Card 卡片的内容配置同上
     "data": {
         "type": "2"
     },
-    "controls": [
+    "body": [
         {
             "type": "mapping",
             "name": "type",
@@ -161,7 +205,7 @@ List 的内容、Card 卡片的内容配置同上
             "type": "2"
         }
     },
-    "controls": [
+    "body": [
         {
             "type": "mapping",
             "name": "type",
