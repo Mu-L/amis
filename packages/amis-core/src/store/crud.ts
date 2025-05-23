@@ -54,6 +54,7 @@ class ServerError extends Error {
   readonly response: any;
   constructor(msg: string, response?: any) {
     super(msg);
+    Object.setPrototypeOf(this, ServerError.prototype);
     this.response = response;
   }
 }
@@ -150,6 +151,10 @@ export const CRUDStore = ServiceStore.named('CRUDStore')
       };
 
       return context;
+    },
+
+    get offset() {
+      return (self.page - 1) * self.perPage;
     }
   }))
   .actions(self => {
