@@ -3,6 +3,7 @@ import {EditorStoreType} from '../store/editor';
 import React, {memo} from 'react';
 import {EditorManager} from '../manager';
 import Frame, {useFrame} from 'react-frame-component';
+import {SchemaRenderer} from './SchemaRenderer';
 import {
   autobind,
   closeContextMenus,
@@ -39,7 +40,7 @@ export default class IFramePreview extends React.Component<IFramePreviewProps> {
         return el.outerHTML;
       });
     styles.push(
-      `<style>body {height:auto !important;min-height:100%;display: flex;flex-direction: column;}</style>`
+      `<style>body {height:auto !important;min-height:auto;display: flex;flex-direction: column;}</style>`
     );
 
     this.initialContent = `<!DOCTYPE html><html><head>${styles.join(
@@ -124,7 +125,10 @@ export default class IFramePreview extends React.Component<IFramePreviewProps> {
             },
             {
               ...env,
-              session: `${env.session}-iframe-preview`,
+              session: `${env.session}-${
+                editable ? 'edit' : 'preview'
+              }-iframe-preview`,
+              SchemaRenderer: editable ? SchemaRenderer : undefined,
               useMobileUI: true,
               isMobile: this.isMobile,
               getModalContainer: this.getModalContainer
@@ -244,7 +248,10 @@ function InnerComponent({
 
   const syncIframeHeight = React.useCallback(() => {
     const iframe = manager.store.getIframe()!;
-    iframe.style.cssText += `height: ${doc!.body.offsetHeight}px`;
+    iframe.style.cssText += `height: ${Math.max(
+      doc!.body.offsetHeight,
+      667
+    )}px`;
   }, []);
 
   const handleDragEnter = React.useCallback((e: DragEvent) => {
